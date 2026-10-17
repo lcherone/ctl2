@@ -1,3 +1,4 @@
+/** Canonical encoding, dictionary strategy, portability, and round-trip tests. */
 import { describe, expect, it } from 'vitest';
 import {
   compareFormats,
@@ -71,6 +72,23 @@ describe('CTL2 encoding and decoding', () => {
     expect(shortWords.split('|')[1]).not.toContain('=a');
   });
 
+  it('caps compact dictionaries at the decoder entry limit', () => {
+    const words = Array.from({ length: 4_097 }, (_, index) => `dictionaryword${index.toString(36).padStart(4, '0')}`);
+    const objective = `${words.join(' ')} ${words.join(' ')}`;
+    const payload = encode({ ...task, id: 'dictionary-limit', objective });
+    const dictionary = payload.split('|')[1]!.slice(2).split(',');
+
+    expect(dictionary).toHaveLength(4_096);
+    expect(decode(payload)).toEqual({ ...task, id: 'dictionary-limit', objective });
+  });
+
+  it('never emits more dictionary references than the decoder accepts', () => {
+    const objective = 'referenceword '.repeat(65_537).trim();
+    expect(() => encode({ ...task, id: 'reference-limit', objective })).toThrow(
+      /Encoded CTL2 has \d+ dictionary references; maximum is 65536/
+    );
+  });
+
   it('uses deterministic abstract dictionaries for every repeated word', () => {
     const repeatedWords: HandoverTask = {
       ...task,
@@ -131,5 +149,15 @@ describe('CTL2 encoding and decoding', () => {
     expect(() => encode({ ...task, id: '' })).toThrow();
     expect(() => encode({ ...task, title: 'x'.repeat(241) })).toThrow();
     expect(() => handoverTaskSchema.parse({ ...task, operation: 'deploy' })).toThrow();
+  });
+
+  it('reports malformed UTF-16 source text explicitly', () => {
+    expect(() => encode({ ...task, objective: '\uD800' })).toThrow(/source text contains malformed UTF-16/);
+  });
+
+  it('rejects invalid runtime options from untyped JavaScript callers', () => {
+    expect(() => encode(task, { dictionaryMode: 'opaque' } as never)).toThrow(/Unsupported CTL2 dictionary mode/);
+    expect(() => encode(task, null as never)).toThrow(/encode options must be an object/);
+    expect(() => encode(task, [] as never)).toThrow(/encode options must be an object/);
   });
 });

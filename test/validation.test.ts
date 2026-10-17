@@ -1,3 +1,4 @@
+/** Malformed-input, runtime-boundary, and resource-limit regression tests. */
 import { describe, expect, it } from 'vitest';
 import { CTL_LIMITS, decodeTransferPayload, encode, validate } from '../src/index.js';
 import { canonicalTaskPayload, replaceField, task } from './fixtures.js';
@@ -27,6 +28,11 @@ describe('strict validation', () => {
     expect(validate(canonicalTaskPayload)).toEqual({ valid: true, task, errors: [] });
   });
 
+  it('rejects non-string payloads from untyped JavaScript callers', () => {
+    expect(validate(null as never).errors[0]).toBe('CTL payload must be a string.');
+    expect(validate(new Uint8Array() as never).errors[0]).toBe('CTL payload must be a string.');
+  });
+
   it('rejects every truncated prefix of a canonical payload', () => {
     for (let length = 0; length < canonicalTaskPayload.length; length += 1) {
       expect(validate(canonicalTaskPayload.slice(0, length)).valid, `prefix length ${length}`).toBe(false);
@@ -47,7 +53,13 @@ describe('strict validation', () => {
 
   it('rejects an oversized encoded payload before parsing', () => {
     const payload = `C2|${'x'.repeat(CTL_LIMITS.maxPayloadBytes)}`;
-    expect(validate(payload).errors[0]).toMatch(/CTL payload is .* maximum/);
+    expect(validate(payload).errors[0]).toMatch(/CTL payload .*1000000/);
+  });
+
+  it('measures payload limits in UTF-8 bytes rather than JavaScript characters', () => {
+    const payload = `C2|${'é'.repeat(Math.floor(CTL_LIMITS.maxPayloadBytes / 2) + 1)}`;
+    expect(payload.length).toBeLessThan(CTL_LIMITS.maxPayloadBytes);
+    expect(validate(payload).errors[0]).toMatch(/payload is .* bytes; maximum is 1000000/);
   });
 
   it('rejects oversized dictionaries before decoding entries', () => {
@@ -88,5 +100,11 @@ describe('strict validation', () => {
     expect(() => decodeTransferPayload('json', '{not-json}')).toThrow(/Invalid JSON task payload/);
     expect(() => decodeTransferPayload('json', JSON.stringify({ ...task, operation: 'invent' }))).toThrow();
     expect(() => decodeTransferPayload('json', JSON.stringify({ ...task, extra: true }))).toThrow();
+  });
+
+  it('rejects unsupported transfer formats from untyped JavaScript callers', () => {
+    expect(() => decodeTransferPayload('yaml' as never, canonicalTaskPayload)).toThrow(
+      /Unsupported transfer format: yaml/
+    );
   });
 });

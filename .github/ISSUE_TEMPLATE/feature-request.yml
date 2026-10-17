@@ -1,0 +1,32 @@
+name: Feature request
+description: Propose a focused public API, protocol, tooling, or documentation improvement.
+title: '[Feature]: '
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the adoption or maintenance problem, independently of a preferred solution.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Include example input, output, or API shape when relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility impact
+      description: Explain possible effects on canonical bytes, stored payloads, limits, types, or consumers.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false

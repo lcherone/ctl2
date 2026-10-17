@@ -1,3 +1,4 @@
+/** Decode-only compatibility coverage for previously stored CTL1 payloads. */
 import { describe, expect, it } from 'vitest';
 import { decode, validate } from '../src/index.js';
 

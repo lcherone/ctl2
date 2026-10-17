@@ -6,21 +6,58 @@ on:
   pull_request:
   workflow_dispatch:
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
 jobs:
-  test:
+  quality:
+    name: Quality / Node ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
+      fail-fast: false
       matrix:
         node-version: [22, 24]
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-      - run: npm ci
-      - run: npm run check
-      - run: npm pack --dry-run
+      - name: Use the declared npm version
+        run: npm install --global npm@11.21.1
+      - name: Install exact dependencies
+        run: npm ci
+      - name: Run complete quality gate
+        run: npm run check
+      - name: Audit all dependencies
+        run: npm audit --audit-level=high
+      - name: Inspect publishable package
+        run: npm pack --dry-run --ignore-scripts
+
+  runtime:
+    name: Runtime / Node ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18, 20, 22, 24]
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - name: Install runtime dependencies only
+        run: npm ci --omit=dev --ignore-scripts
+      - name: Exercise committed ESM, CommonJS, exports, and examples
+        run: node --test test/*.test.mjs

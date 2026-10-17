@@ -2,6 +2,25 @@
 
 All notable changes are documented here. This project follows [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+## 0.2.0 - 2026-10-17
+
+### Added
+
+- Comprehensive JSDoc for the public API, task schema, limits, and internal codec pipeline.
+- Executable exact input/output and validation examples.
+- API, wire-format, architecture, production-adoption, and testing guides.
+- Runtime schema descriptions for schema-aware tooling.
+- CI documentation validation, package validation, dependency review, static analysis, and automated dependency updates.
+
+### Changed
+
+- `ValidationResult` is now a fully discriminated TypeScript union.
+- The encoder rejects invalid runtime options and unsupported transfer formats from untyped callers.
+- Compact dictionary construction stops at the decoder's entry limit.
+- The encoder refuses to return a payload above the decoder's dictionary-reference limit.
+
 ## 0.1.0 - 2026-10-17
 
 ### Added

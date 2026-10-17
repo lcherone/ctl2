@@ -1,8 +1,10 @@
+/** Reproducible generated coverage for Unicode, delimiters, and both CTL2 modes. */
 import { describe, expect, it } from 'vitest';
 import { decode, encode, type HandoverTask } from '../src/index.js';
 
 describe('deterministic fuzz coverage', () => {
   it('round-trips 1,000 generated tasks in compact and abstract modes', () => {
+    // Fixed xorshift state keeps every generated failure exactly reproducible.
     let state = 0xC7122026;
     const random = () => {
       state ^= state << 13;
