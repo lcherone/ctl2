@@ -1,12 +1,17 @@
 /** Source, test, script, and JSDoc rules for the repository quality gate. */
 import js from '@eslint/js';
 import jsdoc from 'eslint-plugin-jsdoc';
+import reactHooks from 'eslint-plugin-react-hooks';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['coverage/**', 'dist/**', 'node_modules/**'] },
+  { ignores: ['coverage/**', 'dist/**', 'site-dist/**', 'node_modules/**'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
+  {
+    ...reactHooks.configs.flat['recommended-latest'],
+    files: ['playground/**/*.tsx']
+  },
   {
     ...jsdoc.configs['flat/recommended-typescript-error'],
     files: ['src/**/*.ts'],
@@ -16,7 +21,7 @@ export default tseslint.config(
     }
   },
   {
-    files: ['**/*.ts'],
+    files: ['**/*.ts', '**/*.tsx'],
     rules: {
       '@typescript-eslint/no-non-null-assertion': 'off'
     }

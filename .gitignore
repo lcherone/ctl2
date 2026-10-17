@@ -1,4 +1,5 @@
 node_modules/
 coverage/
+site-dist/
 *.tgz
 .DS_Store

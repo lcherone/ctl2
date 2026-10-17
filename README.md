@@ -3,10 +3,13 @@
 [![CI](https://github.com/lcherone/ctl2/actions/workflows/ci.yml/badge.svg)](https://github.com/lcherone/ctl2/actions/workflows/ci.yml)
 [![GitHub release](https://img.shields.io/github/v/release/lcherone/ctl2)](https://github.com/lcherone/ctl2/releases)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Try the playground](https://img.shields.io/badge/try-the_playground-cfff2e.svg)](https://lcherone.github.io/ctl2/)
 
 CTL2 is a small TypeScript codec for deterministic, reversible task handovers. It turns a validated structured task into a compact canonical string and decodes that string without asking a model to infer missing information.
 
 It is intended for systems that need to preview, compare, store, sign, or transmit the exact task that an agent or worker will receive.
+
+Try every format and API in the [interactive CTL2 playground](https://lcherone.github.io/ctl2/). It runs entirely in your browser; task content is never uploaded.
 
 ## When CTL2 is a good fit
 
