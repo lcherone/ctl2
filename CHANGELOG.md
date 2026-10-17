@@ -4,6 +4,10 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ## Unreleased
 
+### Added
+
+- Interactive browser playground with live validation, encoding, decoding, byte comparisons, API examples, and GitHub Pages deployment.
+
 ## 0.3.0 - 2026-10-17
 
 ### Changed
