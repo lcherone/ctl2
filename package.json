@@ -1,6 +1,6 @@
 {
   "name": "@lcherone/ctl2",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Deterministic, reversible Compact Task Language serialization for structured AI handovers.",
   "license": "MIT",
   "author": "Lawrence Cherone",
@@ -70,7 +70,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "zod": "^3.24.2"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

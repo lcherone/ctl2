@@ -39,14 +39,14 @@ CTL2 is compact serialization, not a privacy boundary. Anyone who can read a pay
 Install directly from the immutable public GitHub release tag without registry authentication:
 
 ```bash
-npm install github:lcherone/ctl2#v0.2.0
+npm install github:lcherone/ctl2#v0.3.0
 ```
 
 Or install from GitHub Packages after authenticating npm for `npm.pkg.github.com`:
 
 ```bash
 npm config set @lcherone:registry https://npm.pkg.github.com
-npm install @lcherone/ctl2@0.2.0
+npm install @lcherone/ctl2@0.3.0
 ```
 
 The runtime supports Node.js 18 and later. The ESM build also works in modern browsers that provide `TextEncoder`.

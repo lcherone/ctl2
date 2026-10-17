@@ -34,7 +34,7 @@ For public Git installation, pin an immutable tag:
 ```json
 {
   "dependencies": {
-    "@lcherone/ctl2": "github:lcherone/ctl2#v0.2.0"
+    "@lcherone/ctl2": "github:lcherone/ctl2#v0.3.0"
   }
 }
 ```
