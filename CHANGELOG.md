@@ -4,8 +4,11 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ## Unreleased
 
+## 0.3.0 - 2026-10-17
+
 ### Changed
 
+- Upgrade the public runtime schema dependency to Zod 4. The CTL task and wire formats are unchanged, while exported schema declaration types now follow Zod 4.
 - Group Vitest and its coverage provider into one compatible dependency update.
 - Keep TypeScript and Node.js type definitions on their currently supported major versions.
 

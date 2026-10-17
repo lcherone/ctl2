@@ -3,7 +3,7 @@
  *
  * The release workflow supplies `GITHUB_REF_NAME`. A positional argument is
  * also accepted for local verification, for example:
- *   node scripts/check-release-tag.mjs v0.2.0
+ *   node scripts/check-release-tag.mjs v0.3.0
  */
 
 import { readFileSync } from 'node:fs';

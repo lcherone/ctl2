@@ -19,7 +19,13 @@ import { z } from 'zod';
  * - `review`: inspect and report rather than mutate.
  * - `test`: add or execute verification work.
  */
-declare const operationSchema: z.ZodEnum<["implement", "fix", "refactor", "review", "test"]>;
+declare const operationSchema: z.ZodEnum<{
+    implement: "implement";
+    fix: "fix";
+    refactor: "refactor";
+    review: "review";
+    test: "test";
+}>;
 /** A supported task operation inferred from {@link operationSchema}. */
 type Operation = z.infer<typeof operationSchema>;
 /**
@@ -28,14 +34,22 @@ type Operation = z.infer<typeof operationSchema>;
  * This label is descriptive metadata. CTL2 does not enforce an organisation's
  * authorization policy and does not make restricted content private.
  */
-declare const classificationSchema: z.ZodEnum<["public", "internal-approved", "restricted"]>;
+declare const classificationSchema: z.ZodEnum<{
+    public: "public";
+    "internal-approved": "internal-approved";
+    restricted: "restricted";
+}>;
 /** A task-context classification inferred from {@link classificationSchema}. */
 type ContextClassification = z.infer<typeof classificationSchema>;
 /**
  * Runtime validator for payload representations supported by
  * {@link decodeTransferPayload}.
  */
-declare const transferFormatSchema: z.ZodEnum<["ctl", "ctl-abstract", "json"]>;
+declare const transferFormatSchema: z.ZodEnum<{
+    ctl: "ctl";
+    "ctl-abstract": "ctl-abstract";
+    json: "json";
+}>;
 /** A supported transfer representation inferred from {@link transferFormatSchema}. */
 type TransferFormat = z.infer<typeof transferFormatSchema>;
 /**
@@ -91,44 +105,26 @@ declare const handoverTaskSchema: z.ZodObject<{
     id: z.ZodString;
     title: z.ZodString;
     objective: z.ZodString;
-    operation: z.ZodEnum<["implement", "fix", "refactor", "review", "test"]>;
-    targets: z.ZodArray<z.ZodString, "many">;
-    requirements: z.ZodArray<z.ZodString, "many">;
-    acceptanceCriteria: z.ZodArray<z.ZodString, "many">;
-    constraints: z.ZodArray<z.ZodString, "many">;
-    verification: z.ZodArray<z.ZodString, "many">;
-    assumptions: z.ZodArray<z.ZodString, "many">;
-    exclusions: z.ZodArray<z.ZodString, "many">;
-    contextClassification: z.ZodEnum<["public", "internal-approved", "restricted"]>;
-}, "strict", z.ZodTypeAny, {
-    version: 1;
-    id: string;
-    title: string;
-    objective: string;
-    operation: "implement" | "fix" | "refactor" | "review" | "test";
-    targets: string[];
-    requirements: string[];
-    acceptanceCriteria: string[];
-    constraints: string[];
-    verification: string[];
-    assumptions: string[];
-    exclusions: string[];
-    contextClassification: "public" | "internal-approved" | "restricted";
-}, {
-    version: 1;
-    id: string;
-    title: string;
-    objective: string;
-    operation: "implement" | "fix" | "refactor" | "review" | "test";
-    targets: string[];
-    requirements: string[];
-    acceptanceCriteria: string[];
-    constraints: string[];
-    verification: string[];
-    assumptions: string[];
-    exclusions: string[];
-    contextClassification: "public" | "internal-approved" | "restricted";
-}>;
+    operation: z.ZodEnum<{
+        implement: "implement";
+        fix: "fix";
+        refactor: "refactor";
+        review: "review";
+        test: "test";
+    }>;
+    targets: z.ZodArray<z.ZodString>;
+    requirements: z.ZodArray<z.ZodString>;
+    acceptanceCriteria: z.ZodArray<z.ZodString>;
+    constraints: z.ZodArray<z.ZodString>;
+    verification: z.ZodArray<z.ZodString>;
+    assumptions: z.ZodArray<z.ZodString>;
+    exclusions: z.ZodArray<z.ZodString>;
+    contextClassification: z.ZodEnum<{
+        public: "public";
+        "internal-approved": "internal-approved";
+        restricted: "restricted";
+    }>;
+}, z.core.$strict>;
 
 /**
  * Deterministic CTL2 encoding, strict CTL2/CTL1 decoding, and format helpers.
