@@ -83,7 +83,7 @@
     "typedoc": "^0.28.20",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.71.2",
-    "vitest": "4.1.12"
+    "vitest": "5.0.4"
   },
   "packageManager": "npm@11.21.1",
   "allowScripts": {
