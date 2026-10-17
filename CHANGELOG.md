@@ -4,6 +4,11 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ## Unreleased
 
+### Changed
+
+- Group Vitest and its coverage provider into one compatible dependency update.
+- Keep TypeScript and Node.js type definitions on their currently supported major versions.
+
 ## 0.2.0 - 2026-10-17
 
 ### Added
