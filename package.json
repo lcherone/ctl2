@@ -1,0 +1,74 @@
+{
+  "name": "@lcherone/ctl2",
+  "version": "0.1.0",
+  "description": "Deterministic, reversible Compact Task Language serialization for structured AI handovers.",
+  "license": "MIT",
+  "author": "Lawrence Cherone",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "SECURITY.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lcherone/ctl2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lcherone/ctl2/issues"
+  },
+  "homepage": "https://github.com/lcherone/ctl2#readme",
+  "keywords": [
+    "ai",
+    "codec",
+    "compact",
+    "deterministic",
+    "handover",
+    "serialization",
+    "task"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --sourcemap --clean --treeshake --target es2020",
+    "check": "npm run lint && npm run typecheck && npm run test:coverage && npm run build && npm run test:package",
+    "lint": "eslint .",
+    "prepack": "npm run check",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:package": "node --test test/package.test.mjs",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.13.10",
+    "@vitest/coverage-v8": "4.1.12",
+    "eslint": "^10.0.1",
+    "tsup": "^9.0.0",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.71.2",
+    "vitest": "4.1.12"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
+  }
+}
